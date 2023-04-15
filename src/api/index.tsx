@@ -159,6 +159,28 @@ export const apiReqs = {
                 console.log(err)
             })
     },
+    // 上传数据集
+    uploadDataSet: (config:any) => {
+        config.url = API_DOMAIN + 'module/uploadDataset/'
+        axios.post(config.url,qs.stringify(config.data))
+            .then((res)=>{
+                config.success&&config.success(res.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    },
+    // 上传权重
+    uploadWeight: (config:any) => {
+        config.url = API_DOMAIN + 'module/uploadWeight/'
+        axios.post(config.url,qs.stringify(config.data))
+            .then((res)=>{
+                config.success&&config.success(res.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    },
     // 获取模型列表
      getModelList: (config:any) => {
         let url = API_DOMAIN + 'module/search/'
@@ -175,6 +197,7 @@ export const apiReqs = {
         let url = API_DOMAIN + 'module/checkModel/'
         axios.post(url,qs.stringify(config.data))
             .then((res)=>{
+                console.log(res)
                 config.success&&config.success(res.data)
             }   )
             .catch((err)=>{
@@ -205,7 +228,7 @@ export const apiReqs = {
     },
     // 生成模块
     generateModule: (config:any) => {
-        let url = API_DOMAIN + 'module/produceModule/'
+        let url = API_DOMAIN + 'module/tempProduceModule/'
         axios.post(url,qs.stringify(config.data))
             .then((res)=>{
                 config.success&&config.success(res.data)
@@ -216,7 +239,40 @@ export const apiReqs = {
     },
     // 测试模块
     testModule: (config:any) => {
-        let url = API_DOMAIN + 'module/testModule/'
+        let url = API_DOMAIN + 'module/tempTestModule/'
+        axios.post(url,qs.stringify(config.data))
+            .then((res)=>{
+                config.success&&config.success(res.data)
+            }   )
+            .catch((err)=>{
+                console.log(err)
+            }   )
+    },
+    // 搜索模块
+    searchModule: (config:any) => {
+        let url = API_DOMAIN + 'module/searchModule/'
+        axios.post(url,qs.stringify(config.data))
+            .then((res)=>{
+                config.success&&config.success(res.data)
+            }   )
+            .catch((err)=>{
+                console.log(err)
+            }   )
+    },
+    // 搜索组合模块
+    searchCombinationModule: (config:any) => {
+        let url = API_DOMAIN + 'module/searchCombinedModule/'
+        axios.post(url,qs.stringify(config.data))
+            .then((res)=>{
+                config.success&&config.success(res.data)
+            }   )
+            .catch((err)=>{
+                console.log(err)
+            }   )
+    },
+    // 组合模块
+    combineModule: (config:any) => {
+        let url = API_DOMAIN + 'module/combineModule/'
         axios.post(url,qs.stringify(config.data))
             .then((res)=>{
                 config.success&&config.success(res.data)

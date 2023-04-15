@@ -5,6 +5,7 @@ import {Button, Input} from 'antd'
 // @ts-ignore
 import imgLogo from './logo.jpeg'
 import './login.styl'
+import register from "../register";
 
 function Register() {
     const navigate = useNavigate()
@@ -13,16 +14,21 @@ function Register() {
     const [nickname, setNickname] = useState('')
 
     const login = () => {
-        let userID = "0";
+        let userID ;
         userID= apiReqs.signIn({
             data: {
                 email:account,
                 password:password,
             },
         })
+        console.log(userID)
         goto('/home/'+userID+'')
         localStorage.setItem('userID',userID)
         //console.log(userID)
+    }
+
+    const register = () => {
+        goto('/register')
     }
 
     return (
@@ -37,7 +43,9 @@ function Register() {
             <div className="ipt-con">
                 <Input.Password placeholder="密码" value={password} onChange={(e)=>{setPassword(e.target.value)}}/>
             </div>
-            <Link to="/register">去注册</Link>
+            <div className="ipt-con">
+                <Button type="link" block onClick={register} style={{color:'white'}}>没有账号？</Button>
+            </div>
             <div className="ipt-con">
                 <Button type="primary" block={true} onClick={login}>
                     登录

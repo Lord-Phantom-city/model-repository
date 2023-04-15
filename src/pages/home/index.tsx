@@ -23,7 +23,7 @@ function Home() {
                 setModelList(res.modelList)
             }
         })
-    })
+    },[])
 
     const onSearch = (value: string) => {
         let flag = 1;
@@ -70,25 +70,16 @@ function Home() {
                     width: 800,
                 }}
             />
+
+                <Form onSendValue={getValue}></Form>
             </center>
-            <h1>Home Page</h1>
-            <div className="M-model">
+
+            <div className="M-modelList">
                 {
                     modelList.map((item: any,index) => {
-                        return <Model key={index} id={item.modelID} name={item.modelName}></Model>
+                        return <div className="M-model" key={index}><Model  id={item.modelID} name={item.modelName} ></Model></div>
                     })
                 }
-            </div>
-            <div className="M-form"> <Form onSendValue={getValue}></Form></div>
-            <div className="ipt-con">
-                <Button onClick={() => {
-                    goto('/login')
-                }}>组件外跳转</Button>
-            </div>
-            <div className="ipt-con">
-                <Button onClick={() => {
-                    navigate('/login')
-                }}>返回登录</Button>
             </div>
             {/*<button onClick={printValue}>打印value</button>*/}
         </div>

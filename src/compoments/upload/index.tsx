@@ -7,6 +7,7 @@ import { message, Upload } from 'antd';
 const { Dragger } = Upload;
 type selfProps = {
     flag: number;
+    height: number;
 }
 // @ts-ignore
 const props: UploadProps = {
@@ -40,7 +41,7 @@ const props: UploadProps = {
 };
 const UploadFile: React.FC<selfProps> = (prop) => {
     props.data={type:prop.flag,userID:0};
-    return (<Dragger {...props} height={80} >
+    return (<Dragger {...props} height={prop.height} >
         <p className="ant-upload-text">Click or drag file to this area to upload</p>
         {/*<p className="ant-upload-hint">*/}
         {/*    Support for a single or bulk upload. Strictly prohibit from uploading company data or other*/}

@@ -1,6 +1,6 @@
-import {useNavigate,useParams} from 'react-router-dom'
-import { Button, message ,notification,Divider,Typography} from 'antd';
-import {useState,useEffect} from "react";
+import {useNavigate, useParams} from 'react-router-dom'
+import {Button, message, notification, Divider, Typography, Card, Tag} from 'antd';
+import {useState, useEffect} from "react";
 import './index.styl'
 // @ts-ignore
 import {apiReqs, goto} from '../../api/index'
@@ -8,32 +8,33 @@ import {apiReqs, goto} from '../../api/index'
 import Header from '../../compoments/header/index'
 import Module from "../../compoments/module";
 import Upload from "../../compoments/upload";
+import Model from "../../compoments/model";
 
 function Index() {
     const navigate = useNavigate()
     const [messageApi, contextHolder] = message.useMessage();
     const key = 'updatable';
-    const {Title,Paragraph,Text}=Typography;
+    const {Title, Paragraph, Text} = Typography;
 
     const [username, setUsername] = useState("")
-    const [moduleClasses, setModuleClass] = useState("")
+    const [moduleClasses, setModuleClass] = useState([])
     const [datasetID, setDatasetID] = useState(0)
     const [datasetName, setDatasetName] = useState("")
-    const [classes,setClasses]=useState("")
-    const [result,setResult]=useState(0)
+    const [classes, setClasses] = useState([""])
+    const [result, setResult] = useState([])
 
-    const param=useParams();
+    const param = useParams();
     const test = () => {
         apiReqs.testModule({
-            data:{
+            data: {
                 userID: param.userID,
                 moduleID: param.moduleID,
-                target_classes_idx:moduleClasses,
+                //target_classes_idx: moduleClasses,
             },
             success: (res: any) => {
-                let ans=res.classes.slice(1,-1).split(",")
-                console.log(ans[0])
-                setResult(ans[0])
+                setResult(res.classes)
+                console.log(res)
+                // setResult(res.[0])
                 //setModuleList(res.mudules)
                 //console.log(res)
             }
@@ -42,7 +43,7 @@ function Index() {
     }
     useEffect(() => {
         apiReqs.getModuleDetail({
-            data:{
+            data: {
                 userID: param.userID,
                 moduleID: param.moduleID,
             },
@@ -55,7 +56,7 @@ function Index() {
             }
         })
         apiReqs.getDatasetDetail({
-            data:{
+            data: {
                 userID: param.userID,
                 datasetID: datasetID,
             },
@@ -64,23 +65,21 @@ function Index() {
                 //console.log(res)
             }
         })
-    })
+    },[])
     const openMessage = () => {
         test();
-        console.log(result)
+        console.log(result[0])
         messageApi.open({
             key,
             type: 'loading',
             content: 'Loading...',
         });
         setTimeout(() => {
-            let ans=classes.split(",")
-            console.log(ans)
             messageApi.open({
                 key,
                 type: 'success',
                 //content: 'Loaded!',
-                content: 'classes:'+ans[result],
+                content: 'classes:'+moduleClasses[result[1]],
                 duration: 2,
             });
         }, 1000);
@@ -100,25 +99,52 @@ function Index() {
         <div className="P-main">
             {contextHolder}
             <Header/>
-            <Typography>
-                <Title>Model</Title>
-                <Paragraph>
-                    <Text strong>
-                        username:&nbsp;&nbsp;{username}&nbsp;&nbsp;
-                        moduleClasses:&nbsp;&nbsp;{moduleClasses}&nbsp;&nbsp;
-                        datasetID:&nbsp;&nbsp;{datasetID}&nbsp;&nbsp;
-                        datasetName:&nbsp;&nbsp;{datasetName}&nbsp;&nbsp;
-                    </Text>
-                    <br></br>
-                    <Text>
-                        classes:&nbsp;&nbsp;{classes}
-                    </Text>
-                </Paragraph>
-            </Typography>
-            <Upload flag={3} />
-            <Button type="primary" onClick={openMessage}>
-                Commit
-            </Button>
+            <div className="M-Card">
+                <Card title="Module Info" extra={<a href="#">More</a>} style={{width: 500, height: 600}}>
+                    <p>Module Classes:</p>
+                    <div>
+                        {
+                            moduleClasses.map((item: any,index) => {
+                                return <Tag style={{margin:2}} color="#2db7f5">{item}</Tag>
+                            })
+                        }
+                        </div>
+                    <br/>
+                    <p>DataSet Name:{datasetName}</p>
+                    <br/>
+                    <p>DataSet Classes:</p>
+                    <div>
+                        {
+                        classes.map((item: any,index) => {
+                        return <Tag style={{margin:2}} color="#2db7f5">{item}</Tag>
+                    })
+                        }
+                    </div>
+                </Card>
+            </div>
+            {/*<Typography>*/}
+            {/*    <Title>Model</Title>*/}
+            {/*    <Paragraph>*/}
+            {/*        <Text strong>*/}
+            {/*            username:&nbsp;&nbsp;{username}&nbsp;&nbsp;*/}
+            {/*            moduleClasses:&nbsp;&nbsp;{moduleClasses}&nbsp;&nbsp;*/}
+            {/*            datasetID:&nbsp;&nbsp;{datasetID}&nbsp;&nbsp;*/}
+            {/*            datasetName:&nbsp;&nbsp;{datasetName}&nbsp;&nbsp;*/}
+            {/*        </Text>*/}
+            {/*        <br></br>*/}
+            {/*        <Text>*/}
+            {/*            classes:&nbsp;&nbsp;{classes}*/}
+            {/*        </Text>*/}
+            {/*    </Paragraph>*/}
+            {/*</Typography>*/}
+            <div className="M-Upload">
+                <Upload flag={3} height={500}/>
+                <center>
+                    <Button type="primary" onClick={openMessage} style={{marginTop: 20}}>
+                        Commit
+                    </Button>
+                </center>
+            </div>
         </div>
     )
 }

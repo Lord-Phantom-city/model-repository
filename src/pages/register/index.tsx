@@ -5,6 +5,7 @@ import {Button, Input} from 'antd'
 // @ts-ignore
 import imgLogo from './logo.jpeg'
 import './register.styl'
+import {goto} from "../../api";
 
 function Login() {
     const navigate = useNavigate()
@@ -30,6 +31,9 @@ function Login() {
             },
         })
     }
+    const login = () => {
+        goto('/login')
+    }
     return (
         <div className="P-register">
             <img src={imgLogo} alt="" className="logo"/>
@@ -50,7 +54,9 @@ function Login() {
             <div className="ipt-con">
                 <Input placeholder="验证码" value={code} onChange={(e)=>{setCode(e.target.value)}}/>
             </div>
-            <Link to="/login">已有账号？</Link>
+            <div className="ipt-con">
+                <Button type="link" block onClick={login} style={{color:'white'}}>已有账号？</Button>
+            </div>
             <div className="ipt-con">
                 <Button type="primary" block={true} onClick={register}>
                     注册
